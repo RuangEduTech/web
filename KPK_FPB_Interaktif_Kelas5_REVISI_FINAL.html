@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Petualangan KPK & FPB - Pak Suryadi</title>
+<style>
+:root{
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#172033;
+  --muted:#667085;
+  --line:#d9e0ec;
+  --primary:#5b5ce2;
+  --primary2:#13b6b2;
+  --good:#15803d;
+  --bad:#b42318;
+  --warn:#b54708;
+  --soft:#eef2ff;
+  --soft2:#effdfa;
+  --shadow:0 12px 30px rgba(23,32,51,.08);
+  --r:20px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family: ui-rounded, "Nunito", "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(91,92,226,.12), transparent 25%),
+    radial-gradient(circle at 100% 20%, rgba(19,182,178,.10), transparent 22%),
+    var(--bg);
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{max-width:1180px;margin:auto;padding:14px 14px 90px}
+.topbar{
+  position:sticky;top:0;z-index:30;
+  backdrop-filter:blur(14px);
+  background:rgba(245,247,251,.92);
+  border-bottom:1px solid rgba(217,224,236,.95);
+  margin:0 -14px 16px;
+  padding:10px 14px;
+}
+.topbar-inner{max-width:1180px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:white;display:grid;place-items:center;font-weight:900;box-shadow:var(--shadow);flex:none}
+.brand h1{margin:0;font-size:clamp(18px,2.8vw,24px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand small{display:block;color:var(--muted);font-size:12px}
+.score-chip,.maker-chip{
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-weight:900;white-space:nowrap;box-shadow:0 4px 12px rgba(23,32,51,.05)
+}
+.top-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.nav{display:grid;grid-template-columns:repeat(7,minmax(110px,1fr));gap:8px;overflow:auto;padding:2px 0 4px;margin-bottom:18px}
+.nav button{border:1px solid var(--line);background:var(--card);padding:11px 12px;border-radius:14px;font-weight:900;color:var(--text)}
+.nav button.active{background:var(--primary);border-color:var(--primary);color:white}
+.page{display:none;animation:fade .25s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:.35;transform:translateY(5px)}to{opacity:1;transform:none}}
+.hero{border-radius:28px;padding:clamp(18px,4vw,40px);background:linear-gradient(135deg,#25276f 0%,#5b5ce2 48%,#13b6b2 120%);color:white;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;right:-70px;bottom:-90px;width:250px;height:250px;border:36px solid rgba(255,255,255,.08);border-radius:50%}
+.tag{display:inline-block;background:rgba(255,255,255,.16);border-radius:999px;padding:7px 11px;font-weight:900;font-size:12px}
+.hero h2{font-size:clamp(28px,6vw,56px);line-height:1;margin:10px 0 12px}
+.hero p{max-width:740px;color:rgba(255,255,255,.9);font-size:clamp(15px,2vw,18px)}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 8px 22px rgba(23,32,51,.05);padding:20px}
+.span-4{grid-column:span 4}.span-5{grid-column:span 5}.span-6{grid-column:span 6}.span-7{grid-column:span 7}.span-8{grid-column:span 8}.span-12{grid-column:span 12}
+.section-title{margin:0 0 8px;font-size:clamp(25px,4vw,38px)}
+.section-lead{margin:0 0 18px;color:var(--muted);max-width:860px}
+.form-grid{display:grid;grid-template-columns:1fr 180px;gap:12px;max-width:760px}
+label{display:block;font-weight:900;margin-bottom:6px}
+input[type="text"],input[type="number"]{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:14px;background:white;color:var(--text);outline:none}
+input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(91,92,226,.10)}
+.btn{border:0;border-radius:14px;padding:12px 16px;font-weight:900;background:var(--primary);color:white;box-shadow:0 8px 16px rgba(91,92,226,.18)}
+.btn.secondary{background:white;color:var(--text);border:1px solid var(--line);box-shadow:none}
+.btn.good{background:var(--good)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.definition{display:flex;gap:12px;align-items:flex-start;border-radius:18px;background:var(--soft);padding:15px;margin:10px 0}
+.badge{min-width:44px;height:44px;border-radius:14px;background:var(--primary);color:white;display:grid;place-items:center;font-weight:900}
+.badge.alt{background:var(--primary2)}
+.step{margin:18px 0;padding-left:14px;border-left:4px solid var(--primary)}
+.step h4{margin:0 0 8px}
+.mathline{padding:12px 14px;border:1px dashed #c7cfdf;border-radius:14px;background:#fbfcff;margin:8px 0;line-height:1.8}
+.circled{display:inline-grid;place-items:center;min-width:34px;height:34px;padding:0 6px;border:3px solid var(--primary2);border-radius:50%;font-weight:900;background:#ecffff;margin:0 2px}
+.greatest{border-color:#f59e0b;background:#fff8e8}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.mini-note{background:#fff8e8;border:1px solid #fedf89;border-radius:14px;padding:12px 14px;color:#7a2e0e;font-weight:700}
+.slots{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.slot{width:62px!important;text-align:center;padding:10px 6px!important;font-weight:900}
+.slot.wide{width:88px!important}
+.feedback{display:none;margin-top:12px;padding:12px 14px;border-radius:14px;font-weight:800}
+.feedback.show{display:block}
+.feedback.ok{background:#ecfdf3;color:var(--good);border:1px solid #abefc6}
+.feedback.no{background:#fff1f0;color:var(--bad);border:1px solid #fecdca}
+.feedback.info{background:#fff8e8;color:var(--warn);border:1px solid #fedf89}
+.table3-wrap{overflow:auto;padding-bottom:6px}
+.table3{min-width:420px;border:2px solid #cfd7e7;border-radius:18px;overflow:hidden;background:white}
+.table3-row{display:grid;grid-template-columns:90px 1fr 1fr}
+.table3-row>div{min-height:62px;padding:12px;border-right:1px solid #d6deea;border-bottom:1px solid #d6deea;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:900;font-size:clamp(16px,2.2vw,22px)}
+.table3-row>div:last-child{border-right:0}
+.table3-row:last-child>div{border-bottom:0}
+.table3-head>div{background:#f8faff}
+.left-blank{background:#f8faff}
+.left-prime{background:#f3f5ff;position:relative}
+.left-prime.common::after{content:"";position:absolute;inset:10px;border:3px solid var(--primary2);border-radius:50%}
+.table-input-mini{width:64px!important;padding:8px!important;text-align:center;font-weight:900}
+.table-input-prime{width:58px!important;padding:8px!important;text-align:center;font-weight:900}
+.underline{border-bottom:2px dashed #bcc6d9;min-width:30px;display:inline-block;height:1.2em}
+.legend-line{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:13px}
+.mission-map{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;margin:18px 0}
+.level-btn{min-height:100px;border:1px solid var(--line);border-radius:18px;background:white;padding:12px;text-align:left;box-shadow:0 5px 14px rgba(23,32,51,.05)}
+.level-btn strong{display:block;font-size:16px;margin-bottom:4px}
+.level-btn span{font-size:12px;color:var(--muted)}
+.level-btn.done{background:#f0fdf4;border-color:#86efac}
+.level-btn.locked{opacity:.48;cursor:not-allowed}
+.game-shell{display:grid;grid-template-columns:280px 1fr;gap:16px}
+.meter{height:12px;border-radius:999px;background:#eef1f6;overflow:hidden}
+.meter>div{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--primary2));transition:.25s}
+.game-stage{min-height:360px;display:flex;flex-direction:column;justify-content:center}
+.q-kicker{color:var(--primary);font-weight:900;text-transform:uppercase;font-size:12px;letter-spacing:.08em}
+.q-title{font-size:clamp(24px,4vw,34px);margin:8px 0 12px}
+.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.choice{border:1.5px solid var(--line);background:white;border-radius:16px;padding:14px;text-align:left;font-weight:800}
+.choice.correct{background:#ecfdf3;border-color:#6ce9a6;color:var(--good)}
+.choice.wrong{background:#fff1f0;border-color:#fda29b;color:var(--bad)}
+.drag-bank,.drop-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.drag-item{padding:10px 14px;border-radius:14px;background:#eef2ff;border:1px solid #c9d1ff;font-weight:900;cursor:grab;user-select:none;touch-action:none}
+.drop-slot{min-width:90px;min-height:48px;border:2px dashed #c4ccda;border-radius:14px;display:flex;align-items:center;justify-content:center;padding:6px 10px;background:#fafcff;font-weight:900}
+.drop-slot.filled{border-style:solid;background:#f4fffb;border-color:#89d7c7}
+.drop-slot.bad{background:#fff4f3;border-color:#f5b3ad}
+.inline-fill{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.inline-fill input{width:90px;text-align:center;font-weight:900}
+.table3.game .table3-row>div{min-height:68px}
+.report-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.report-item{padding:14px;border:1px solid var(--line);border-radius:16px;background:#fbfcff}
+.report-item strong{display:block;font-size:24px}
+.result-card{text-align:center;padding:28px}
+.result-score{font-size:clamp(56px,10vw,86px);font-weight:1000;line-height:1;color:var(--primary)}
+.stars{letter-spacing:4px;font-size:24px}
+.certificate{border:2px solid var(--line);border-radius:24px;padding:28px;text-align:center;background:radial-gradient(circle at 10% 10%,rgba(91,92,226,.08),transparent 24%),radial-gradient(circle at 90% 90%,rgba(19,182,178,.08),transparent 24%),white}
+.footer-note{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(100px);opacity:0;transition:.25s;z-index:100;background:#172033;color:white;padding:12px 16px;border-radius:999px;font-weight:900;box-shadow:var(--shadow);max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:90}
+.confetti i{position:absolute;width:10px;height:16px;background:var(--primary);top:-30px;animation:fall 1.8s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(700deg);opacity:.9}}
+@media(max-width:980px){
+  .span-4,.span-5,.span-6,.span-7,.span-8{grid-column:span 12}
+  .mission-map{grid-template-columns:repeat(4,1fr)}
+  .game-shell{grid-template-columns:1fr}
+  .report-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:640px){
+  .app{padding:10px 10px 84px}
+  .topbar{margin:0 -10px 14px;padding:10px}
+  .nav{grid-template-columns:repeat(7,auto)}
+  .form-grid{grid-template-columns:1fr}
+  .card{padding:16px}
+  .choices{grid-template-columns:1fr}
+  .mission-map{grid-template-columns:repeat(2,1fr)}
+  .report-grid{grid-template-columns:1fr}
+  .table3-row{grid-template-columns:74px 1fr 1fr}
+  .table3-row>div{min-height:58px;padding:10px;font-size:18px}
+  .slot{width:54px!important}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="logo">K×F</div>
+      <div>
+        <h1>Petualangan KPK & FPB</h1>
+        <small>Kelas V • Belajar, mencoba, lalu menaklukkan angka</small>
+      </div>
+    </div>
+    <div class="top-right">
+      <div class="maker-chip">✍️ Buatan Pak Suryadi</div>
+      <div class="score-chip">⭐ <span id="globalScore">0</span> poin</div>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+  <nav class="nav" id="nav">
+    <button data-page="start" class="active">Mulai</button>
+    <button data-page="materi">Materi</button>
+    <button data-page="latihan1">Latihan 6 & 8</button>
+    <button data-page="tabel">Cara Tabel</button>
+    <button data-page="latihan2">Latihan 8 & 12</button>
+    <button data-page="game">Game</button>
+    <button data-page="rekap">Rekap</button>
+  </nav>
+
+  <section class="page active" id="page-start">
+    <div class="hero">
+      <span class="tag">MEDIA PEMBELAJARAN INTERAKTIF</span>
+      <h2>Masuk ke Lab Angka 🔢</h2>
+      <p>Belajar KPK dan FPB dengan langkah yang jelas, latihan isian, cara tabel 3 kolom, drag & drop, dan soal ekstra yang lebih menantang.</p>
+    </div>
+    <div class="grid" style="margin-top:16px">
+      <div class="card span-8">
+        <h3>1. Tulis nama dan kelas</h3>
+        <div class="form-grid">
+          <div>
+            <label for="studentName">Nama</label>
+            <input id="studentName" type="text" placeholder="Contoh: Bimo">
+          </div>
+          <div>
+            <label for="studentClass">Kelas</label>
+            <input id="studentClass" type="text" placeholder="Contoh: 5B">
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn" onclick="saveProfile()">Simpan & Mulai</button>
+          <span class="muted small" id="profileStatus">Data disimpan di browser perangkat ini.</span>
+        </div>
+      </div>
+      <div class="card span-4">
+        <h3>Target pembelajaran</h3>
+        <ul>
+          <li>Menjelaskan pengertian KPK dan FPB.</li>
+          <li>Mencari kelipatan, faktor, dan bilangan prima.</li>
+          <li>Menentukan KPK dan FPB dengan daftar angka.</li>
+          <li>Menggunakan cara tabel dengan susunan 3 kolom.</li>
+          <li>Menyelesaikan soal campuran secara bertahap.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="page-materi">
+    <h2 class="section-title">2. Pengertian KPK dan FPB (contoh 4 dan 6)</h2>
+    <p class="section-lead">KPK mencari kelipatan yang sama lalu mengambil yang terkecil. FPB mencari faktor yang sama lalu mengambil yang terbesar.</p>
+    <div class="grid">
+      <div class="card span-6">
+        <div class="definition">
+          <div class="badge">KPK</div>
+          <div><b>Kelipatan Persekutuan Terkecil</b><br><span class="muted">Kelipatan yang sama dari dua bilangan, lalu dipilih yang paling kecil.</span></div>
+        </div>
+        <div class="step">
+          <h4>Langkah 1. K = Kelipatan</h4>
+          <div class="mathline"><b>Kelipatan 4</b> : 4, 8, 12, 16, 20, 24, …</div>
+          <div class="mathline"><b>Kelipatan 6</b> : 6, 12, 18, 24, 30, …</div>
+        </div>
+        <div class="step">
+          <h4>Langkah 2. KP = Kelipatan Persekutuan</h4>
+          <div class="mathline"><b>Kelipatan 4</b> : 4, 8, <span class="circled">12</span>, 16, 20, <span class="circled">24</span>, …</div>
+          <div class="mathline"><b>Kelipatan 6</b> : 6, <span class="circled">12</span>, 18, <span class="circled">24</span>, 30, …</div>
+        </div>
+        <div class="step">
+          <h4>Langkah 3. KPK</h4>
+          <div class="mathline">KPK = pilih angka terkecil dari yang sama tadi → <span class="circled greatest">12</span></div>
+          <div class="mathline"><b>KPK(4,6) = 12</b></div>
+        </div>
+      </div>
+      <div class="card span-6">
+        <div class="definition">
+          <div class="badge alt">FPB</div>
+          <div><b>Faktor Persekutuan Terbesar</b><br><span class="muted">Faktor yang sama dari dua bilangan, lalu dipilih yang paling besar.</span></div>
+        </div>
+        <div class="step">
+          <h4>Langkah 1. F = Faktor</h4>
+          <div class="mathline"><b>4</b> = 1, 2, 4<br>1 | 4<br>2 | 2</div>
+          <div class="mathline"><b>6</b> = 1, 2, 3, 6<br>1 | 6<br>2 | 3</div>
+        </div>
+        <div class="step">
+          <h4>Langkah 2. FP = Faktor Persekutuan</h4>
+          <div class="mathline"><b>4</b> = <span class="circled">1</span>, <span class="circled">2</span>, 4</div>
+          <div class="mathline"><b>6</b> = <span class="circled">1</span>, <span class="circled">2</span>, 3, 6</div>
+        </div>
+        <div class="step">
+          <h4>Langkah 3. FPB</h4>
+          <div class="mathline">FPB = pilih faktor persekutuan terbesar → <span class="circled greatest">2</span></div>
+          <div class="mathline"><b>FPB(4,6) = 2</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="page-latihan1">
+    <h2 class="section-title">3. Latihan isian langkah: 6 dan 8</h2>
+    <p class="section-lead">Isi langkah-langkahnya, lalu periksa jawabanmu.</p>
+    <div class="grid">
+      <div class="card span-6">
+        <h3>KPK 6 dan 8</h3>
+        <div class="step">
+          <h4>Langkah 1. Kelipatan</h4>
+          <label>Kelipatan 6</label>
+          <div class="slots" id="m6"></div>
+          <label style="margin-top:10px">Kelipatan 8</label>
+          <div class="slots" id="m8"></div>
+        </div>
+        <div class="step">
+          <h4>Langkah 2. Kelipatan Persekutuan</h4>
+          <div class="slots">
+            <input class="slot wide" id="kp1" type="number" inputmode="numeric">
+            <input class="slot wide" id="kp2" type="number" inputmode="numeric">
+          </div>
+        </div>
+        <div class="step">
+          <h4>Langkah 3. KPK</h4>
+          <div class="inline-fill">KPK(6,8) = <input id="kpk68" type="number" inputmode="numeric"></div>
+        </div>
+        <button class="btn" onclick="checkPractice68('kpk')">Periksa KPK</button>
+        <div class="feedback" id="fb68kpk"></div>
+      </div>
+      <div class="card span-6">
+        <h3>FPB 6 dan 8</h3>
+        <div class="step">
+          <h4>Langkah 1. Faktor</h4>
+          <label>Faktor 6</label>
+          <div class="slots" id="f6"></div>
+          <label style="margin-top:10px">Faktor 8</label>
+          <div class="slots" id="f8"></div>
+        </div>
+        <div class="step">
+          <h4>Langkah 2. Faktor Persekutuan</h4>
+          <div class="slots">
+            <input class="slot wide" id="fp1" type="number" inputmode="numeric">
+            <input class="slot wide" id="fp2" type="number" inputmode="numeric">
+          </div>
+        </div>
+        <div class="step">
+          <h4>Langkah 3. FPB</h4>
+          <div class="inline-fill">FPB(6,8) = <input id="fpb68" type="number" inputmode="numeric"></div>
+        </div>
+        <button class="btn" onclick="checkPractice68('fpb')">Periksa FPB</button>
+        <div class="feedback" id="fb68fpb"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="page-tabel">
+    <h2 class="section-title">4. Cara tabel 3 kolom: 6 dan 8</h2>
+    <p class="section-lead">Susunan tabel mengikuti contoh: baris paling atas hanya berisi angka yang dicari. Baris berikutnya di sebelah kiri berisi pembagi. Jika tidak dapat dibagi, kotaknya boleh kosong.</p>
+    <div class="grid">
+      <div class="card span-7">
+        <h3>Contoh persis bentuk tabel</h3>
+        <div class="table3-wrap">
+          <div class="table3">
+            <div class="table3-row table3-head">
+              <div class="left-blank"></div>
+              <div>6</div>
+              <div>8</div>
+            </div>
+            <div class="table3-row">
+              <div class="left-prime common">2</div>
+              <div>3</div>
+              <div>4</div>
+            </div>
+            <div class="table3-row">
+              <div class="left-prime">2</div>
+              <div></div>
+              <div>2</div>
+            </div>
+            <div class="table3-row">
+              <div class="left-prime">2</div>
+              <div></div>
+              <div>1</div>
+            </div>
+            <div class="table3-row">
+              <div class="left-prime">3</div>
+              <div>1</div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+        <div class="legend-line">🟢 Angka 2 yang dilingkari artinya pembagi itu membagi <b>kedua bilangan</b> sekaligus.</div>
+      </div>
+      <div class="card span-5">
+        <h3>Petunjuk</h3>
+        <div class="mini-note">Bagi kedua angka dengan bilangan prima di sebelah kiri. Lanjutkan sampai akhirnya menuju angka 1. Jika salah satu tidak bisa dibagi, kotak pada kolom itu boleh kosong.</div>
+        <div class="mathline"><b>KPK</b> = kalikan semua angka di kiri<br>2 × 2 × 2 × 3 = <b>24</b></div>
+        <div class="mathline"><b>FPB</b> = kalikan angka kiri yang membagi kedua bilangan<br>2 = <b>2</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="page-latihan2">
+    <h2 class="section-title">5. Latihan cara tabel: 8 dan 12</h2>
+    <p class="section-lead">Lengkapi tabel dengan bentuk yang sama. Isi sampai ketemu 1. Jika tidak bisa dibagi, kolom boleh dikosongkan.</p>
+    <div class="card">
+      <div class="table3-wrap">
+        <div class="table3" id="table812Box">
+          <div class="table3-row table3-head">
+            <div class="left-blank"></div>
+            <div>8</div>
+            <div>12</div>
+          </div>
+          <div class="table3-row">
+            <div><input class="table-input-prime" id="t812_0_0" type="number" inputmode="numeric"></div>
+            <div><input class="table-input-mini" id="t812_0_1" type="number" inputmode="numeric"></div>
+            <div><input class="table-input-mini" id="t812_0_2" type="number" inputmode="numeric"></div>
+          </div>
+          <div class="table3-row">
+            <div><input class="table-input-prime" id="t812_1_0" type="number" inputmode="numeric"></div>
+            <div><input class="table-input-mini" id="t812_1_1" type="number" inputmode="numeric"></div>
+            <div><input class="table-input-mini" id="t812_1_2" type="number" inputmode="numeric"></div>
+          </div>
+          <div class="table3-row">
+            <div><input class="table-input-prime" id="t812_2_0" type="number" inputmode="numeric"></div>
+            <div><input class="table-input-mini" id="t812_2_1" type="number" inputmode="numeric"></div>
+            <div><input class="table-input-mini" id="t812_2_2" type="number" inputmode="numeric"></div>
+          </div>
+          <div class="table3-row">
+            <div><input class="table-input-prime" id="t812_3_0" type="number" inputmode="numeric"></div>
+            <div><input class="table-input-mini" id="t812_3_1" type="number" inputmode="numeric"></div>
+            <div><input class="table-input-mini" id="t812_3_2" type="number" inputmode="numeric"></div>
+          </div>
+        </div>
+      </div>
+      <p class="muted small">Petunjuk urutan prima yang efisien: 2, 2, 2, 3</p>
+      <div class="grid" style="margin-top:10px">
+        <div class="span-6">
+          <label>KPK(8,12)</label>
+          <input id="kpk812" type="number" inputmode="numeric" placeholder="Hasil KPK">
+        </div>
+        <div class="span-6">
+          <label>FPB(8,12)</label>
+          <input id="fpb812" type="number" inputmode="numeric" placeholder="Hasil FPB">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn" onclick="checkTable812()">Periksa Tabel</button>
+        <button class="btn secondary" onclick="clearTable812()">Kosongkan Lagi</button>
+      </div>
+      <div class="feedback" id="fb812"></div>
+    </div>
+  </section>
+
+  <section class="page" id="page-game">
+    <h2 class="section-title">6. Game bertingkat: dari dasar sampai soal ekstra</h2>
+    <p class="section-lead">Ada soal pilihan, drag & drop, isian langkah manual, dan tabel. Setiap kali level diulang, angka dan soal akan diacak ulang. Minimal 60% untuk membuka level berikutnya.</p>
+    <div class="mini-note" style="margin:0 0 16px">🖱️ <b>Cara drag & drop:</b> klik/tap dan tahan kartu angka, lalu geser ke kotak jawaban. Lepaskan saat kartu sudah berada di atas kotak. Ketuk kotak yang sudah terisi untuk mengembalikan kartu.</div>
+    <div class="mission-map" id="missionMap"></div>
+    <div class="game-shell">
+      <div class="card">
+        <h3 id="levelTitleSide">Pilih level</h3>
+        <p class="muted small" id="levelDescSide">Kerjakan level satu per satu.</p>
+        <div class="meter"><div id="gameBar"></div></div>
+        <p><b>Soal:</b> <span id="gameProgText">0/0</span></p>
+        <p><b>Benar:</b> <span id="gameCorrect">0</span></p>
+        <p><b>Salah:</b> <span id="gameWrong">0</span></p>
+        <p><b>Nilai level:</b> <span id="gameScoreNow">0</span></p>
+      </div>
+      <div class="card game-stage" id="gameStage">
+        <div class="q-kicker">Peta level</div>
+        <h3 class="q-title">Pilih Level 1 untuk mulai.</h3>
+        <p class="muted">Level akan bertahap: kelipatan, faktor, langkah manual KPK-FPB, cara tabel, campuran, lalu soal ekstra.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="page-rekap">
+    <h2 class="section-title">7. Rekap nilai dan pemahaman</h2>
+    <p class="section-lead">Rekap menampilkan rata-rata level, hasil tiap kemampuan, dan keterangan pemahaman murid.</p>
+    <div class="grid">
+      <div class="card span-4 result-card">
+        <div class="muted">Rata-rata game</div>
+        <div class="result-score" id="finalScore">0</div>
+        <div class="stars" id="finalStars">☆☆☆☆☆</div>
+        <h3 id="masteryTitle">Belum ada hasil</h3>
+        <p class="muted" id="masteryText">Selesaikan level permainan untuk melihat rekap kemampuanmu.</p>
+      </div>
+      <div class="card span-8">
+        <h3>Pencapaian per level</h3>
+        <div class="report-grid" id="reportGrid"></div>
+      </div>
+      <div class="card span-12">
+        <div class="certificate">
+          <div class="tag" style="background:var(--soft);color:var(--primary)">REKAP PETUALANGAN</div>
+          <h2 id="certName">Nama Murid</h2>
+          <p id="certClass" class="muted">Kelas -</p>
+          <p id="certText">Telah mengikuti media pembelajaran KPK & FPB buatan Pak Suryadi.</p>
+          <div class="btn-row" style="justify-content:center">
+            <button class="btn" onclick="window.print()">Cetak Rekap</button>
+            <button class="btn secondary" onclick="resetProgress()">Reset Progres</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-note">Petualangan KPK & FPB • Buatan Pak Suryadi • HTML mandiri • Responsif untuk HP dan laptop</div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="confetti" id="confetti"></div>
+
+<script>
+const state = {
+  name: localStorage.getItem('kpk3_name') || localStorage.getItem('kpk2_name') || '',
+  cls: localStorage.getItem('kpk3_class') || localStorage.getItem('kpk2_class') || '',
+  practice: JSON.parse(localStorage.getItem('kpk3_practice') || localStorage.getItem('kpk2_practice') || '{}'),
+  levels: JSON.parse(localStorage.getItem('kpk3_levels') || localStorage.getItem('kpk2_levels') || '{}'),
+  currentLevel: null,
+  currentTaskIndex: 0,
+  levelCorrect: 0,
+  levelWrong: 0,
+  levelTasks: [],
+  taskLocked: false
+};
+
+const levelInfo = [
+  {id:1, icon:'🪜', name:'Kelipatan & Faktor', desc:'Dasar pola bilangan dan pembagi'},
+  {id:2, icon:'💎', name:'Bilangan Prima', desc:'Prima dan pembagi prima'},
+  {id:3, icon:'✏️', name:'KPK Cara Manual', desc:'Langkah kelipatan sampai KPK'},
+  {id:4, icon:'📝', name:'FPB Cara Manual', desc:'Langkah faktor sampai FPB'},
+  {id:5, icon:'🧮', name:'Cara Tabel', desc:'Tabel 3 kolom sampai angka 1'},
+  {id:6, icon:'🖱️', name:'Drag & Susun', desc:'Klik tahan lalu geser jawaban'},
+  {id:7, icon:'🏆', name:'Campuran Lengkap', desc:'Manual, tabel, dan soal cerita'},
+  {id:8, icon:'🚀', name:'Soal Ekstra', desc:'Campuran lebih menantang'}
+];
+
+const practiceAward = {p68kpk:50,p68fpb:50,p812:80};
+
+function saveAll(){
+  localStorage.setItem('kpk3_name', state.name);
+  localStorage.setItem('kpk3_class', state.cls);
+  localStorage.setItem('kpk3_practice', JSON.stringify(state.practice));
+  localStorage.setItem('kpk3_levels', JSON.stringify(state.levels));
+}
+function totalPoints(){
+  let p=0;
+  Object.keys(practiceAward).forEach(k=>{ if(state.practice[k]) p+=practiceAward[k]; });
+  Object.values(state.levels).forEach(v=>{ p += Math.round((v.best||0)/4); });
+  return p;
+}
+function updateGlobal(){ document.getElementById('globalScore').textContent = totalPoints(); }
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); }
+function confetti(){ const box=document.getElementById('confetti'); box.innerHTML=''; for(let i=0;i<24;i++){ const el=document.createElement('i'); el.style.left=Math.random()*100+'%'; el.style.animationDelay=(Math.random()*.4)+'s'; el.style.transform='rotate('+(Math.random()*360)+'deg)'; box.appendChild(el);} setTimeout(()=>box.innerHTML='',2300); }
+function go(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelector(`.nav button[data-page="${page}"]`).classList.add('active');
+  if(page==='rekap') renderReport();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.getElementById('nav').addEventListener('click',e=>{ const b=e.target.closest('button[data-page]'); if(b) go(b.dataset.page); });
+
+function saveProfile(){
+  state.name=document.getElementById('studentName').value.trim();
+  state.cls=document.getElementById('studentClass').value.trim();
+  if(!state.name || !state.cls){ toast('Isi nama dan kelas terlebih dahulu.'); return; }
+  saveAll();
+  document.getElementById('profileStatus').textContent=`Tersimpan: ${state.name} • ${state.cls}`;
+  toast('Profil tersimpan. Yuk lanjut belajar!'); go('materi');
+}
+
+function makeSlots(containerId,count,prefix){
+  const box=document.getElementById(containerId); box.innerHTML='';
+  for(let i=0;i<count;i++){ const inp=document.createElement('input'); inp.type='number'; inp.inputMode='numeric'; inp.className='slot'; inp.id=`${prefix}${i}`; box.appendChild(inp); }
+}
+function readNum(id){ const v=document.getElementById(id).value.trim(); return v==='' ? '' : Number(v); }
+function sameArray(a,b){ return a.length===b.length && a.every((x,i)=>String(x)===String(b[i])); }
+function showFb(id,ok,msg){ const el=document.getElementById(id); el.className='feedback show '+(ok?'ok':'no'); el.innerHTML=msg; }
+
+function checkPractice68(type){
+  if(type==='kpk'){
+    const m6=Array.from({length:6},(_,i)=>readNum('m6_'+i));
+    const m8=Array.from({length:6},(_,i)=>readNum('m8_'+i));
+    const kp=[readNum('kp1'),readNum('kp2')].filter(x=>x!=='').sort((a,b)=>a-b);
+    const ok=sameArray(m6,[6,12,18,24,30,36]) && sameArray(m8,[8,16,24,32,40,48]) && sameArray(kp,[24,48]) && readNum('kpk68')===24;
+    if(ok){ if(!state.practice.p68kpk){state.practice.p68kpk=true;saveAll();updateGlobal();} showFb('fb68kpk',true,'✅ Benar. Kelipatan persekutuan 6 dan 8 adalah 24 dan 48, sehingga KPK = 24. +50 poin'); confetti(); }
+    else showFb('fb68kpk',false,'🔎 Cek lagi urutan kelipatan 6, kelipatan 8, kelipatan persekutuan, dan hasil KPK yang paling kecil.');
+  } else {
+    const f6=Array.from({length:4},(_,i)=>readNum('f6_'+i));
+    const f8=Array.from({length:4},(_,i)=>readNum('f8_'+i));
+    const fp=[readNum('fp1'),readNum('fp2')].filter(x=>x!=='').sort((a,b)=>a-b);
+    const ok=sameArray(f6,[1,2,3,6]) && sameArray(f8,[1,2,4,8]) && sameArray(fp,[1,2]) && readNum('fpb68')===2;
+    if(ok){ if(!state.practice.p68fpb){state.practice.p68fpb=true;saveAll();updateGlobal();} showFb('fb68fpb',true,'✅ Benar. Faktor persekutuan 6 dan 8 adalah 1 dan 2, sehingga FPB = 2. +50 poin'); confetti(); }
+    else showFb('fb68fpb',false,'🔎 Cek lagi daftar faktor 6, faktor 8, faktor persekutuan, dan pilih faktor persekutuan terbesar.');
+  }
+}
+
+function checkTable812(){
+  const ans=[['2','4','6'],['2','2','3'],['2','1',''],['3','','1']]; let ok=true;
+  for(let r=0;r<4;r++) for(let c=0;c<3;c++){ if(document.getElementById(`t812_${r}_${c}`).value.trim()!==ans[r][c]) ok=false; }
+  if(document.getElementById('kpk812').value.trim()!=='24') ok=false;
+  if(document.getElementById('fpb812').value.trim()!=='4') ok=false;
+  if(ok){ if(!state.practice.p812){state.practice.p812=true;saveAll();updateGlobal();} showFb('fb812',true,'✅ Tabel sudah benar. KPK(8,12)=24 dan FPB(8,12)=4. +80 poin'); confetti(); }
+  else showFb('fb812',false,'🔎 Masih ada yang perlu diperbaiki. Ingat: kiri = pembagi prima. Jika suatu kolom tidak dibagi pada baris itu, kotaknya boleh kosong.');
+}
+function clearTable812(){ document.querySelectorAll('[id^="t812_"]').forEach(el=>el.value=''); document.getElementById('kpk812').value=''; document.getElementById('fpb812').value=''; document.getElementById('fb812').className='feedback'; }
+
+// ---------- MATEMATIKA DINAMIS ----------
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function gcd(a,b){ while(b){ [a,b]=[b,a%b]; } return Math.abs(a); }
+function lcm(a,b){ return Math.abs(a*b)/gcd(a,b); }
+function gcdMany(arr){ return arr.reduce((x,y)=>gcd(x,y)); }
+function lcmMany(arr){ return arr.reduce((x,y)=>lcm(x,y)); }
+function factors(n){ const out=[]; for(let i=1;i<=n;i++) if(n%i===0) out.push(i); return out; }
+function isPrime(n){ if(n<2) return false; for(let i=2;i*i<=n;i++) if(n%i===0) return false; return true; }
+function spf(n){ if(n<=1) return null; for(let p=2;p<=n;p++) if(n%p===0 && isPrime(p)) return p; return n; }
+function unique(arr){ return [...new Set(arr)]; }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function pairKey(a,b){ return [Math.min(a,b),Math.max(a,b)].join('-'); }
+
+function tableRows(a,b){
+  let x=a,y=b, rows=[];
+  while(x>1 || y>1){
+    let commonP=null;
+    for(let p=2;p<=Math.max(x,y);p++) if(isPrime(p) && x%p===0 && y%p===0){ commonP=p; break; }
+    let p=commonP || Math.min(spf(x)||Infinity, spf(y)||Infinity);
+    const divX = x>1 && x%p===0;
+    const divY = y>1 && y%p===0;
+    const nx = divX ? x/p : x;
+    const ny = divY ? y/p : y;
+    rows.push({p, a:divX?String(nx):'', b:divY?String(ny):'', common:divX&&divY});
+    x=nx; y=ny;
+    if(rows.length>12) break;
+  }
+  return rows;
+}
+
+function pairPool(min=4,max=30,maxL=90,maxRows=7,requireGcd=1){
+  const out=[];
+  for(let a=min;a<=max;a++) for(let b=a+1;b<=max;b++){
+    const L=lcm(a,b), g=gcd(a,b), rows=tableRows(a,b).length;
+    if(L<=maxL && rows<=maxRows && g>=requireGcd) out.push([a,b]);
+  }
+  return out;
+}
+function manualKpkPool(){
+  return pairPool(4,24,80,8,2).filter(([a,b])=>Math.ceil(2*lcm(a,b)/a)<=10 && Math.ceil(2*lcm(a,b)/b)<=10);
+}
+function manualFpbPool(){ return pairPool(6,36,160,9,2).filter(([a,b])=>factors(a).length<=10 && factors(b).length<=10); }
+function tablePool(){ return pairPool(6,40,180,7,1); }
+
+function choiceTask(title, correct, distractors, exp){
+  const opts=shuffle(unique([String(correct),...distractors.map(String)]).slice(0,4));
+  while(opts.length<4){ const v=String(Number(correct)+randInt(1,12)); if(!opts.includes(v)) opts.push(v); }
+  return {type:'choice',title,options:opts,answer:opts.indexOf(String(correct)),exp};
+}
+function makeDistractors(correct,count=3,step=1,filter=()=>true){
+  const out=[]; let guard=0;
+  while(out.length<count && guard<100){ guard++; const cand=Math.max(1, correct + randInt(-5,5)*step + randInt(-2,2)); if(cand!==correct && !out.includes(cand) && filter(cand)) out.push(cand); }
+  return out;
+}
+
+function genMultipleChoice(){
+  const n=randInt(3,12), k=randInt(2,8), correct=n*k;
+  const distract=[]; while(distract.length<3){ const x=randInt(Math.max(2,correct-12),correct+12); if(x%n!==0 && !distract.includes(x)) distract.push(x); }
+  return choiceTask(`Manakah yang merupakan kelipatan ${n}?`,correct,distract,`${correct} = ${n} × ${k}.`);
+}
+function genFactorChoice(){
+  let n,fs,correct; do{ n=randInt(12,48); fs=factors(n).filter(x=>x>1&&x<n); }while(fs.length<2);
+  correct=pick(fs); const distract=[]; while(distract.length<3){ const x=randInt(2,n-1); if(n%x!==0 && !distract.includes(x)) distract.push(x); }
+  return choiceTask(`Manakah yang merupakan faktor dari ${n}?`,correct,distract,`${n} ÷ ${correct} = ${n/correct} tanpa sisa.`);
+}
+function genMultipleDrag(){
+  const n=randInt(3,11); const slots=[n,2*n,3*n,4*n].map(String); const bank=[...slots];
+  while(bank.length<6){ const x=randInt(n,4*n+8); if(x%n!==0 && !bank.includes(String(x))) bank.push(String(x)); }
+  return {type:'drag',title:`Susun 4 kelipatan pertama dari ${n} secara berurutan.`,bank:shuffle(bank),slots,orderMatters:true,exp:`Urutannya ${slots.join(', ')}.`};
+}
+function genFactorDrag(){
+  let n,fs; do{n=randInt(18,50);fs=factors(n).filter(x=>x!==n);}while(fs.length<4);
+  const correct=shuffle(fs).slice(0,3).sort((a,b)=>a-b).map(String); const bank=[...correct];
+  while(bank.length<6){ const x=randInt(2,n-1); if(n%x!==0 && !bank.includes(String(x))) bank.push(String(x)); }
+  return {type:'drag',title:`Klik/tap tahan lalu geser 3 faktor dari ${n} ke kotak, urut dari kecil ke besar.`,bank:shuffle(bank),slots:correct,orderMatters:true,exp:`Ketiga angka itu membagi ${n} tanpa sisa.`};
+}
+function genPrimeChoice(){
+  const primes=[2,3,5,7,11,13,17,19,23,29,31,37,41,43,47]; const correct=pick(primes.slice(2));
+  const comps=[]; while(comps.length<3){ const x=randInt(4,49); if(!isPrime(x) && !comps.includes(x)) comps.push(x); }
+  return choiceTask('Manakah bilangan prima?',correct,comps,`${correct} hanya memiliki dua faktor positif: 1 dan ${correct}.`);
+}
+function genCommonPrimeChoice(){
+  let a,b,g,primeFactors; do{ a=randInt(8,36); b=randInt(8,36); g=gcd(a,b); primeFactors=factors(g).filter(isPrime); }while(!primeFactors.length || a===b);
+  const correct=pick(primeFactors); const distract=[]; while(distract.length<3){ const p=pick([2,3,5,7,11,13]); if(p!==correct && !(a%p===0&&b%p===0) && !distract.includes(p)) distract.push(p); }
+  return choiceTask(`Bilangan prima mana yang dapat membagi ${a} dan ${b} sekaligus?`,correct,distract,`${a} dan ${b} sama-sama dapat dibagi ${correct}.`);
+}
+function genPrimeDrag(){
+  const all=[2,3,5,7,11,13,17,19]; const chosen=shuffle(all).slice(0,4).sort((a,b)=>a-b); const bank=chosen.map(String);
+  while(bank.length<7){ const c=randInt(4,25); if(!isPrime(c) && !bank.includes(String(c))) bank.push(String(c)); }
+  return {type:'drag',title:'Klik/tap tahan lalu geser 4 bilangan prima ke kotak, urut dari kecil ke besar.',bank:shuffle(bank),slots:chosen.map(String),orderMatters:true,exp:`Bilangan prima yang benar: ${chosen.join(', ')}.`};
+}
+
+function manualKPKTask(pair){
+  const [a,b]=pair; const L=lcm(a,b); const countA=2*L/a, countB=2*L/b;
+  return {type:'manualKPK',a,b,listA:Array.from({length:countA},(_,i)=>String(a*(i+1))),listB:Array.from({length:countB},(_,i)=>String(b*(i+1))),common:[String(L),String(2*L)],kpk:String(L),exp:`Kelipatan persekutuan pertama ${a} dan ${b} adalah ${L}, jadi KPK = ${L}.`};
+}
+function manualFPBTask(pair){
+  const [a,b]=pair; const fa=factors(a).map(String), fb=factors(b).map(String); const common=fa.filter(x=>fb.includes(x)); const G=gcd(a,b);
+  return {type:'manualFPB',a,b,fa,fb,common,fpb:String(G),exp:`Faktor persekutuan terbesar ${a} dan ${b} adalah ${G}.`};
+}
+function tableTask(pair){
+  const [a,b]=pair; const rows=tableRows(a,b); const k=rows.reduce((p,r)=>p*r.p,1); const f=rows.filter(r=>r.common).reduce((p,r)=>p*r.p,1);
+  return {type:'table3',a,b,rows,kpk:String(k),fpb:String(f),exp:`KPK(${a},${b}) = ${k} dan FPB(${a},${b}) = ${f}.`};
+}
+function dragTablePrimeTask(pair){
+  const [a,b]=pair; const rows=tableRows(a,b); const seq=rows.map(r=>String(r.p)); const bank=[...seq];
+  while(bank.length<seq.length+2){ const p=pick([2,3,5,7]); if(!bank.includes(String(p)) || seq.filter(x=>x===String(p)).length>bank.filter(x=>x===String(p)).length) bank.push(String(p)); else bank.push(String(p+2)); }
+  return {type:'drag',title:`Untuk tabel ${a} dan ${b}, klik/tap tahan lalu geser pembagi kiri dari atas ke bawah.`,bank:shuffle(bank),slots:seq,orderMatters:true,exp:`Urutan pembagi kiri: ${seq.join(' × ')}.`};
+}
+function genStoryKPK(){
+  const pair=pick(pairPool(4,18,90,8,1)); const [a,b]=pair; const L=lcm(a,b);
+  const distract=unique([Math.max(a,b),L+a,L-b,2*L]).filter(x=>x>0&&x!==L).slice(0,3);
+  return choiceTask(`Lampu A menyala tiap ${a} detik dan lampu B tiap ${b} detik. Jika sekarang menyala bersama, keduanya menyala bersama lagi setelah ... detik.`,L,distract,`Kejadian berulang bersama memakai KPK(${a},${b}) = ${L}.`);
+}
+function genStoryFPB(){
+  let a,b,G; do{a=randInt(18,72);b=randInt(18,72);G=gcd(a,b);}while(G<3||G===a||G===b);
+  const distract=makeDistractors(G,3,1,x=>x<a&&x<b);
+  return choiceTask(`${a} kelereng merah dan ${b} kelereng biru akan dibagi ke kelompok sama banyak tanpa sisa. Jumlah kelompok terbanyak adalah ...`,G,distract,`Jumlah kelompok terbanyak memakai FPB(${a},${b}) = ${G}.`);
+}
+function extraThreeChoice(kind){
+  let nums,ans;
+  if(kind==='kpk'){
+    do{ nums=unique([randInt(4,15),randInt(4,15),randInt(4,15)]); }while(nums.length<3 || lcmMany(nums)>300);
+    ans=lcmMany(nums); const d=makeDistractors(ans,3,Math.max(1,Math.floor(ans/12)),x=>x>0);
+    return choiceTask(`Soal ekstra: KPK dari ${nums.join(', ')} adalah ...`,ans,d,`KPK ketiga bilangan tersebut = ${ans}.`);
+  } else {
+    do{ nums=unique([randInt(18,72),randInt(18,72),randInt(18,72)]); }while(nums.length<3 || gcdMany(nums)<2);
+    ans=gcdMany(nums); const d=makeDistractors(ans,3,1,x=>x>0);
+    return choiceTask(`Soal ekstra: FPB dari ${nums.join(', ')} adalah ...`,ans,d,`FPB ketiga bilangan tersebut = ${ans}.`);
+  }
+}
+
+function pickDistinctPairs(pool,count){ return shuffle(pool).slice(0,Math.min(count,pool.length)); }
+function generateLevelTasks(id){
+  if(id===1) return [genMultipleChoice(),genFactorChoice(),genMultipleChoice(),genFactorChoice(),genMultipleDrag(),genFactorDrag()];
+  if(id===2) return [genPrimeChoice(),genCommonPrimeChoice(),genPrimeChoice(),genCommonPrimeChoice(),genPrimeDrag(),genPrimeChoice()];
+  if(id===3) return pickDistinctPairs(manualKpkPool(),6).map(manualKPKTask);
+  if(id===4) return pickDistinctPairs(manualFpbPool(),6).map(manualFPBTask);
+  if(id===5) return pickDistinctPairs(tablePool(),6).map(tableTask);
+  if(id===6){
+    const pairs=pickDistinctPairs(tablePool(),6);
+    return [dragTablePrimeTask(pairs[0]),tableTask(pairs[1]),dragTablePrimeTask(pairs[2]),tableTask(pairs[3]),dragTablePrimeTask(pairs[4]),tableTask(pairs[5])];
+  }
+  if(id===7){
+    const kp=pickDistinctPairs(manualKpkPool(),2), fp=pickDistinctPairs(manualFpbPool(),2), tb=pickDistinctPairs(tablePool(),2);
+    return [manualKPKTask(kp[0]),manualFPBTask(fp[0]),tableTask(tb[0]),genStoryKPK(),manualKPKTask(kp[1]),manualFPBTask(fp[1]),tableTask(tb[1]),genStoryFPB()];
+  }
+  return [extraThreeChoice('kpk'),extraThreeChoice('fpb'),genStoryKPK(),genStoryFPB(),manualKPKTask(pick(manualKpkPool())),manualFPBTask(pick(manualFpbPool())),tableTask(pick(tablePool())),extraThreeChoice(Math.random()<.5?'kpk':'fpb')];
+}
+
+// ---------- LEVEL & RENDER ----------
+function unlocked(id){ if(id===1) return true; return (state.levels[id-1]?.best||0)>=60; }
+function renderMissionMap(){
+  const box=document.getElementById('missionMap'); box.innerHTML='';
+  levelInfo.forEach(l=>{
+    const btn=document.createElement('button'); btn.className='level-btn';
+    if((state.levels[l.id]?.best||0)>=60) btn.classList.add('done');
+    if(!unlocked(l.id)) btn.classList.add('locked'); btn.disabled=!unlocked(l.id);
+    btn.innerHTML=`<strong>${l.icon} Level ${l.id}</strong><span>${l.name}<br>${l.desc}${state.levels[l.id]?.best!==undefined?` • ${state.levels[l.id].best}%`:''}</span>`;
+    btn.onclick=()=>startLevel(l.id); box.appendChild(btn);
+  });
+}
+function startLevel(id){
+  state.currentLevel=id; state.currentTaskIndex=0; state.levelCorrect=0; state.levelWrong=0; state.taskLocked=false;
+  state.levelTasks=generateLevelTasks(id);
+  document.getElementById('levelTitleSide').textContent=`Level ${id} • ${levelInfo[id-1].name}`;
+  document.getElementById('levelDescSide').textContent=levelInfo[id-1].desc + ' • Soal baru diacak setiap mulai/ulang level.';
+  renderGameTask();
+}
+function updateGameSide(){
+  const total=state.levelTasks.length;
+  document.getElementById('gameProgText').textContent=`${Math.min(state.currentTaskIndex+1,total)}/${total}`;
+  document.getElementById('gameCorrect').textContent=state.levelCorrect;
+  document.getElementById('gameWrong').textContent=state.levelWrong;
+  document.getElementById('gameScoreNow').textContent=total?Math.round(state.levelCorrect/total*100):0;
+  document.getElementById('gameBar').style.width=total?(state.currentTaskIndex/total*100)+'%':'0%';
+}
+function inputSlots(prefix,arr){ return arr.map((_,i)=>`<input class="slot wide" id="${prefix}_${i}" type="text" inputmode="numeric">`).join(''); }
+function renderGameTask(){
+  state.taskLocked=false; updateGameSide(); const area=document.getElementById('gameStage'); const t=state.levelTasks[state.currentTaskIndex]; if(!t){finishLevel();return;}
+  let h=`<div class="q-kicker">Level ${state.currentLevel} • Soal ${state.currentTaskIndex+1} dari ${state.levelTasks.length}</div>`;
+  if(t.type==='choice'){
+    h+=`<h3 class="q-title">${t.title}</h3><div class="choices">${t.options.map((o,i)=>`<button class="choice" onclick="answerChoice(${i})">${o}</button>`).join('')}</div><div class="feedback" id="gfb"></div>`;
+  } else if(t.type==='drag'){
+    h+=`<h3 class="q-title">${t.title}</h3><div class="mini-note">🖱️ Klik/tap dan tahan kartu angka, lalu geser ke kotak jawaban. Lepaskan di atas kotak. Ketuk kotak terisi untuk mengembalikan kartu.</div><div class="drag-bank" id="dragBank" style="margin-top:14px">${t.bank.map((v,i)=>`<div class="drag-item" data-val="${v}" id="drag_${state.currentTaskIndex}_${i}" onpointerdown="dragPointerDown(event)">${v}</div>`).join('')}</div><div style="height:14px"></div><div class="drop-row" id="dropRow">${t.slots.map((_,i)=>`<div class="drop-slot" data-index="${i}" onclick="clearDropSlot(this)"></div>`).join('')}</div><div class="btn-row"><button class="btn" onclick="checkDrag()">Periksa</button></div><div class="feedback" id="gfb"></div>`;
+  } else if(t.type==='manualKPK'){
+    h+=`<div class="q-kicker">Cara manual</div><h3 class="q-title">Cari KPK dari ${t.a} dan ${t.b}</h3>
+    <div class="step"><h4>Langkah 1 • Kelipatan ${t.a}</h4><div class="slots">${inputSlots('mkpa',t.listA)}</div></div>
+    <div class="step"><h4>Langkah 1 • Kelipatan ${t.b}</h4><div class="slots">${inputSlots('mkpb',t.listB)}</div></div>
+    <div class="step"><h4>Langkah 2 • Dua kelipatan persekutuan</h4><div class="slots">${inputSlots('mkpc',t.common)}</div></div>
+    <div class="step"><h4>Langkah 3 • KPK</h4><div class="inline-fill">KPK(${t.a},${t.b}) = <input id="mkpfinal" type="text" inputmode="numeric"></div></div>
+    <div class="btn-row"><button class="btn" onclick="checkManualKPK()">Periksa Semua Langkah</button></div><div class="feedback" id="gfb"></div>`;
+  } else if(t.type==='manualFPB'){
+    h+=`<div class="q-kicker">Cara manual</div><h3 class="q-title">Cari FPB dari ${t.a} dan ${t.b}</h3>
+    <div class="step"><h4>Langkah 1 • Faktor ${t.a}</h4><div class="slots">${inputSlots('mfpa',t.fa)}</div></div>
+    <div class="step"><h4>Langkah 1 • Faktor ${t.b}</h4><div class="slots">${inputSlots('mfpb',t.fb)}</div></div>
+    <div class="step"><h4>Langkah 2 • Faktor persekutuan</h4><div class="slots">${inputSlots('mfpc',t.common)}</div></div>
+    <div class="step"><h4>Langkah 3 • FPB</h4><div class="inline-fill">FPB(${t.a},${t.b}) = <input id="mfpfinal" type="text" inputmode="numeric"></div></div>
+    <div class="btn-row"><button class="btn" onclick="checkManualFPB()">Periksa Semua Langkah</button></div><div class="feedback" id="gfb"></div>`;
+  } else if(t.type==='table3'){
+    h+=`<div class="q-kicker">Cara tabel</div><h3 class="q-title">Lengkapi tabel KPK dan FPB dari ${t.a} dan ${t.b}</h3><div class="mini-note">Baris paling atas hanya angka awal. Kolom kiri adalah pembagi prima. Jika pada suatu baris tidak dapat dibagi, kotak kolom itu dibiarkan kosong.</div>
+    <div class="table3-wrap" style="margin-top:14px"><div class="table3 game"><div class="table3-row table3-head"><div class="left-blank"></div><div>${t.a}</div><div>${t.b}</div></div>${t.rows.map((r,i)=>`<div class="table3-row"><div><input class="table-input-prime" id="gt_${i}_0" type="text" inputmode="numeric"></div><div><input class="table-input-mini" id="gt_${i}_1" type="text" inputmode="numeric"></div><div><input class="table-input-mini" id="gt_${i}_2" type="text" inputmode="numeric"></div></div>`).join('')}</div></div>
+    <div class="inline-fill" style="margin-top:14px">KPK = <input id="gtkpk" type="text" inputmode="numeric"> FPB = <input id="gtfpb" type="text" inputmode="numeric"></div>
+    <div class="btn-row"><button class="btn" onclick="checkTableTask()">Periksa Tabel</button></div><div class="feedback" id="gfb"></div>`;
+  }
+  area.innerHTML=h;
+}
+function showGameFeedback(kind,msg){ const f=document.getElementById('gfb'); f.className='feedback show '+kind; f.innerHTML=msg; }
+function nextTaskButton(){ const row=document.createElement('div'); row.className='btn-row'; const b=document.createElement('button'); b.className='btn'; b.textContent=state.currentTaskIndex===state.levelTasks.length-1?'Lihat Hasil Level':'Soal Berikutnya'; b.onclick=()=>{state.currentTaskIndex++;renderGameTask();}; row.appendChild(b); document.getElementById('gameStage').appendChild(row); }
+function markResult(ok,exp){ if(state.taskLocked) return; state.taskLocked=true; if(ok){state.levelCorrect++;showGameFeedback('ok','✅ Benar. '+(exp||''));toast('Jawaban benar');}else{state.levelWrong++;showGameFeedback('info','💡 Belum tepat. '+(exp||''));} updateGameSide(); nextTaskButton(); }
+function answerChoice(i){ if(state.taskLocked)return; const t=state.levelTasks[state.currentTaskIndex]; document.querySelectorAll('.choice').forEach(b=>b.disabled=true); const bs=[...document.querySelectorAll('.choice')]; bs[t.answer].classList.add('correct'); if(i!==t.answer) bs[i].classList.add('wrong'); markResult(i===t.answer,t.exp); }
+function getInputs(prefix,len){ return Array.from({length:len},(_,i)=>document.getElementById(`${prefix}_${i}`).value.trim()); }
+function checkManualKPK(){ const t=state.levelTasks[state.currentTaskIndex]; const ok=sameArray(getInputs('mkpa',t.listA.length),t.listA)&&sameArray(getInputs('mkpb',t.listB.length),t.listB)&&sameArray(getInputs('mkpc',t.common.length),t.common)&&document.getElementById('mkpfinal').value.trim()===t.kpk; markResult(ok,t.exp); }
+function checkManualFPB(){ const t=state.levelTasks[state.currentTaskIndex]; const ok=sameArray(getInputs('mfpa',t.fa.length),t.fa)&&sameArray(getInputs('mfpb',t.fb.length),t.fb)&&sameArray(getInputs('mfpc',t.common.length),t.common)&&document.getElementById('mfpfinal').value.trim()===t.fpb; markResult(ok,t.exp); }
+function checkTableTask(){ const t=state.levelTasks[state.currentTaskIndex]; let ok=true; t.rows.forEach((r,i)=>{ const ans=[String(r.p),r.a,r.b]; for(let c=0;c<3;c++) if(document.getElementById(`gt_${i}_${c}`).value.trim()!==ans[c]) ok=false; }); if(document.getElementById('gtkpk').value.trim()!==t.kpk)ok=false; if(document.getElementById('gtfpb').value.trim()!==t.fpb)ok=false; markResult(ok,t.exp); }
+
+// ---------- DRAG CUSTOM UNTUK MOUSE & TOUCH ----------
+let dragCtx=null;
+function dragPointerDown(ev){
+  if(state.taskLocked) return;
+  ev.preventDefault(); const src=ev.currentTarget; if(src.style.visibility==='hidden')return;
+  const rect=src.getBoundingClientRect(); const ghost=src.cloneNode(true); ghost.removeAttribute('onpointerdown'); ghost.style.position='fixed'; ghost.style.zIndex='999'; ghost.style.pointerEvents='none'; ghost.style.width=rect.width+'px'; ghost.style.opacity='.92'; ghost.style.boxShadow='0 12px 28px rgba(23,32,51,.22)'; document.body.appendChild(ghost);
+  dragCtx={src,ghost,dx:ev.clientX-rect.left,dy:ev.clientY-rect.top}; moveGhost(ev.clientX,ev.clientY);
+  window.addEventListener('pointermove',dragPointerMove,{passive:false}); window.addEventListener('pointerup',dragPointerUp,{once:true});
+}
+function moveGhost(x,y){ if(!dragCtx)return; dragCtx.ghost.style.left=(x-dragCtx.dx)+'px'; dragCtx.ghost.style.top=(y-dragCtx.dy)+'px'; }
+function dragPointerMove(ev){ if(!dragCtx)return; ev.preventDefault(); moveGhost(ev.clientX,ev.clientY); }
+function dragPointerUp(ev){
+  if(!dragCtx)return; window.removeEventListener('pointermove',dragPointerMove); const {src,ghost}=dragCtx; ghost.remove();
+  const under=document.elementFromPoint(ev.clientX,ev.clientY); const slot=under && under.closest('.drop-slot');
+  if(slot && !slot.dataset.val){ slot.textContent=src.dataset.val; slot.dataset.val=src.dataset.val; slot.dataset.sourceId=src.id; slot.classList.add('filled'); src.style.visibility='hidden'; }
+  dragCtx=null;
+}
+function clearDropSlot(slot){ if(state.taskLocked)return; const id=slot.dataset.sourceId; if(id){ const src=document.getElementById(id); if(src)src.style.visibility='visible'; } slot.textContent=''; delete slot.dataset.val; delete slot.dataset.sourceId; slot.classList.remove('filled','bad'); }
+function checkDrag(){ const t=state.levelTasks[state.currentTaskIndex]; let vals=[...document.querySelectorAll('#dropRow .drop-slot')].map(s=>s.dataset.val||''); let ok; if(t.orderMatters) ok=vals.join('|')===t.slots.join('|'); else ok=[...vals].sort().join('|')===[...t.slots].sort().join('|'); markResult(ok,t.exp); }
+
+function finishLevel(){
+  const total=state.levelTasks.length, score=Math.round(state.levelCorrect/total*100), prev=state.levels[state.currentLevel]?.best||0;
+  if(score>prev){ state.levels[state.currentLevel]={best:score}; saveAll(); updateGlobal(); }
+  renderMissionMap(); document.getElementById('gameBar').style.width='100%'; document.getElementById('gameProgText').textContent=`${total}/${total}`;
+  const pass=score>=60; document.getElementById('gameStage').innerHTML=`<div class="q-kicker">Hasil Level ${state.currentLevel}</div><h3 class="q-title">${pass?'Level selesai! 🔓':'Belum tuntas, coba lagi dengan angka baru 🧭'}</h3><div class="result-score" style="font-size:64px">${score}</div><p class="muted">${state.levelCorrect} benar dari ${total} soal. ${pass?'Level berikutnya terbuka.':'Minimal 60% untuk membuka level berikutnya.'}</p><div class="mini-note">Saat level diulang, sistem membuat angka dan susunan soal baru sehingga kamu berlatih memahami cara, bukan menghafal jawaban.</div><div class="btn-row"><button class="btn" onclick="startLevel(${state.currentLevel})">Ulang dengan Soal Baru</button>${pass&&state.currentLevel<8?`<button class="btn good" onclick="startLevel(${state.currentLevel+1})">Lanjut Level ${state.currentLevel+1}</button>`:''}${state.currentLevel===8?`<button class="btn good" onclick="go('rekap')">Lihat Rekap</button>`:''}</div>`;
+  if(pass)confetti();
+}
+
+function mastery(score){
+  if(score>=90)return['Mahir','Pemahaman sangat kuat dan konsisten, termasuk pada angka yang berubah-ubah.'];
+  if(score>=80)return['Sangat Memahami','Konsep utama sudah dikuasai dengan baik. Tinggal meningkatkan kecepatan dan ketelitian.'];
+  if(score>=70)return['Paham','Dasar sudah baik. Ulangi level manual atau tabel yang nilainya paling rendah.'];
+  if(score>=60)return['Mulai Memahami','Pola dasar sudah terlihat, tetapi perlu lebih banyak latihan dengan angka berbeda.'];
+  return['Perlu Pendampingan','Ulangi dari kelipatan, faktor, kemudian lanjutkan ke cara manual dan tabel.'];
+}
+function renderReport(){
+  const vals=levelInfo.map(l=>state.levels[l.id]?.best).filter(v=>v!==undefined); const avg=vals.length?Math.round(vals.reduce((a,b)=>a+b,0)/vals.length):0;
+  document.getElementById('finalScore').textContent=avg; const sc=Math.max(0,Math.min(5,Math.round(avg/20))); document.getElementById('finalStars').textContent='★'.repeat(sc)+'☆'.repeat(5-sc);
+  const m=mastery(avg); document.getElementById('masteryTitle').textContent=m[0]; document.getElementById('masteryText').textContent=m[1];
+  const rg=document.getElementById('reportGrid'); rg.innerHTML=''; levelInfo.forEach(l=>{const v=state.levels[l.id]?.best; const d=document.createElement('div'); d.className='report-item'; d.innerHTML=`<span class="muted small">Level ${l.id}</span><strong>${v===undefined?'—':v+'%'}</strong><span>${l.name}</span>`; rg.appendChild(d);});
+  document.getElementById('certName').textContent=state.name||'Nama Murid'; document.getElementById('certClass').textContent='Kelas '+(state.cls||'-'); document.getElementById('certText').textContent=vals.length?`Telah menyelesaikan ${vals.length} level dengan rata-rata ${avg}. Media pembelajaran ini dibuat oleh Pak Suryadi.`:'Belum ada level yang diselesaikan.';
+}
+function resetProgress(){ if(!confirm('Reset semua progres? Nama dan kelas tetap disimpan.'))return; state.practice={};state.levels={};saveAll();updateGlobal();renderMissionMap();renderReport();toast('Progres direset.'); }
+function init(){ document.getElementById('studentName').value=state.name; document.getElementById('studentClass').value=state.cls; if(state.name&&state.cls)document.getElementById('profileStatus').textContent=`Tersimpan: ${state.name} • ${state.cls}`; makeSlots('m6',6,'m6_');makeSlots('m8',6,'m8_');makeSlots('f6',4,'f6_');makeSlots('f8',4,'f8_');renderMissionMap();updateGlobal();renderReport(); }
+init();
+</script>
+</body>
+</html>
